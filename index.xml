@@ -6,14 +6,29 @@
     <description>Recent content on Notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr-fr</language>
-    <lastBuildDate>Wed, 16 Feb 2022 20:48:14 +0100</lastBuildDate><atom:link href="https://notes.fcalvet.fr/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Mar 2022 21:43:50 +0200</lastBuildDate><atom:link href="https://notes.fcalvet.fr/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Bienvenue !</title>
-      <link>https://notes.fcalvet.fr/posts/my-first-post/</link>
-      <pubDate>Wed, 16 Feb 2022 20:48:14 +0100</pubDate>
+      <title>Le chiffrement de disque, c&#39;est pas du pareil au même</title>
+      <link>https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/</link>
+      <pubDate>Mon, 28 Mar 2022 21:43:50 +0200</pubDate>
       
-      <guid>https://notes.fcalvet.fr/posts/my-first-post/</guid>
-      <description>Avoir un blog, c&amp;rsquo;est un peu la base sur les Internet, non ?</description>
+      <guid>https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/</guid>
+      <description>C&amp;rsquo;est l&amp;rsquo;étape obligée d&amp;rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d&amp;rsquo;exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d&amp;rsquo;ensemble.
+Note: Il ne faut pas ici imaginer un avis sur les systèmes d&amp;rsquo;exploitation ou les éventuelles marques associées.
+Le principe de base: Linux Le chiffrement de disque y est souvent réalisée par l&amp;rsquo;association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup.</description>
+    </item>
+    
+    <item>
+      <title>La vérification du domaine pour un site statique</title>
+      <link>https://notes.fcalvet.fr/posts/domain-verification/</link>
+      <pubDate>Thu, 17 Feb 2022 22:52:41 +0100</pubDate>
+      
+      <guid>https://notes.fcalvet.fr/posts/domain-verification/</guid>
+      <description>Votre hébergeur de site statique vous demande de prouver que vous possédez bien votre nom de domaine, mais pourquoi donc ?
+La situation de départ Prenons l&amp;rsquo;exemple de ce site au moment de l&amp;rsquo;écriture de cet article, il est hébergé sur GitHub Pages grâce à l&amp;rsquo;enregistrement CNAME suivant:
+notes.fcalvet.fr. 10800 IN CNAME fcalvet.github.io.
+Note subsidiaire: n&amp;rsquo;oubliez pas le point racine dans vos enregistrements DNS !
+L&amp;rsquo;en-tête Host Wikipédia vous informera qu&amp;rsquo;il s&amp;rsquo;agit du &amp;ldquo;seul en-tête réellement important.</description>
     </item>
     
   </channel>

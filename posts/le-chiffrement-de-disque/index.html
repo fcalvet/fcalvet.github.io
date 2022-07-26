@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Le chiffrement de disque, c&#39;est pas du pareil au même | Notes</title>
+<meta name="keywords" content="" />
+<meta name="description" content="C&rsquo;est l&rsquo;étape obligée d&rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d&rsquo;exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d&rsquo;ensemble.
+Note: Il ne faut pas ici imaginer un avis sur les systèmes d&rsquo;exploitation ou les éventuelles marques associées.
+Le principe de base: Linux Le chiffrement de disque y est souvent réalisée par l&rsquo;association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup.">
+<meta name="author" content="">
+<link rel="canonical" href="https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.e21185e6c4b43ff34c81666f70aa4f80140274057866888c0a5c28addc9b7fd2.css" integrity="sha256-4hGF5sS0P/NMgWZvcKpPgBQCdAV4ZoiMClwordybf9I=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.27cd435cc9ed6abb4b496581b151804f79f366c412620272bb94e2f5f598ebcc.js" integrity="sha256-J81DXMntartLSWWBsVGAT3nzZsQSYgJyu5Ti9fWY68w="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://notes.fcalvet.fr/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://notes.fcalvet.fr/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://notes.fcalvet.fr/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://notes.fcalvet.fr/apple-touch-icon.png">
+<link rel="mask-icon" href="https://notes.fcalvet.fr/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Le chiffrement de disque, c&#39;est pas du pareil au même" />
+<meta property="og:description" content="C&rsquo;est l&rsquo;étape obligée d&rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d&rsquo;exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d&rsquo;ensemble.
+Note: Il ne faut pas ici imaginer un avis sur les systèmes d&rsquo;exploitation ou les éventuelles marques associées.
+Le principe de base: Linux Le chiffrement de disque y est souvent réalisée par l&rsquo;association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-28T21:43:50&#43;02:00" />
+<meta property="article:modified_time" content="2022-03-28T21:43:50&#43;02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Le chiffrement de disque, c&#39;est pas du pareil au même"/>
+<meta name="twitter:description" content="C&rsquo;est l&rsquo;étape obligée d&rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d&rsquo;exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d&rsquo;ensemble.
+Note: Il ne faut pas ici imaginer un avis sur les systèmes d&rsquo;exploitation ou les éventuelles marques associées.
+Le principe de base: Linux Le chiffrement de disque y est souvent réalisée par l&rsquo;association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://notes.fcalvet.fr/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Le chiffrement de disque, c'est pas du pareil au même",
+      "item": "https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Le chiffrement de disque, c'est pas du pareil au même",
+  "name": "Le chiffrement de disque, c\u0027est pas du pareil au même",
+  "description": "C\u0026rsquo;est l\u0026rsquo;étape obligée d\u0026rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d\u0026rsquo;exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d\u0026rsquo;ensemble.\nNote: Il ne faut pas ici imaginer un avis sur les systèmes d\u0026rsquo;exploitation ou les éventuelles marques associées.\nLe principe de base: Linux Le chiffrement de disque y est souvent réalisée par l\u0026rsquo;association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup.",
+  "keywords": [
+    
+  ],
+  "articleBody": "C’est l’étape obligée d’une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d’exploitation (en anglais full disk encryption). Mais tous les chiffrements ne se valent pas, une petite vue d’ensemble.\nNote: Il ne faut pas ici imaginer un avis sur les systèmes d’exploitation ou les éventuelles marques associées.\nLe principe de base: Linux Le chiffrement de disque y est souvent réalisée par l’association du module de noyau dm-crypt et du format de partition LUKS avec cryptsetup.\nLe principe est simple: à l’allumage du système, l’utilisateur rentre un long mot de passe, qui une fois passé par un fonction de dérivation de clef (KDF en anglais), donne la clef de chiffrement utilisée pour le disque. Comble du raffinement, en utilisant un format de partition dédié, on peut avoir plusieurs mots de passe ! Il suffit de chiffrer la clef de chiffrement du disque avec la clef obtenue par la fonction de dérivation, et de faire de même autant de fois qu’on le souhaite (ou plutôt que le permet le format).\nOn chiffre le disque un peu comme si c’était un gros fichier. Le noyau Linux se chargeant de ces opérations de chiffrement, la clef réside dans sa mémoire une fois le démarrage réalisé.\nOn pourra d’ailleurs trouver une citation éminemment politique dans la foire aux questions à propos des clefs de chiffrement:\n In most civilized countries you can just refuse to hand over the keys, no harm done.\n Un premier problème: lancer le système d’exploitation Pour arriver à saisir le mot de passe, il faut un clavier et un écran initialisés. Et pour permettre cela on va donc laisser toute une partition du disque en clair, /boot. Celle-ci va contenir notamment le gestionnaire de démarrage (usuellement Grub), ainsi que le noyau linux.\nLaisser une partie ou même la totalité du système en clair ne représente pas un grand risque de confidentialité, ce sont des fichiers librement disponibles sur internet où ils sont distribués en clair. Le risque est pour l’intégrité de celui-ci: sans chiffrement (qui dans le cas qui nous occupe est toujours intègre), un attaquant pourrait le modifier, le compromettre dans l’objectif par exemple d’obtenir le mot de passe que vous allez entrer au démarrage. Se prémunir contre ce genre d’attaque nécessite une vérification d’intégrité du démarrage extérieure au chiffrement du disque lui-même, c’est les Secure/Trusted/Verified Boot.\nL’arrivée d’une puce: Windows La solution linuxienne repose sur la capacité de l’utilisateur à choisir un mot de passe fort, tâche pour laquelle les utilisateurs sont notoirement mauvais. De plus, celui-ci est la seule protection de la clef de chiffrement du disque, et ainsi seule la complexité de la fonction de dérivation de clef protège le chiffrement d’une attaque par force brute.\nVient alors l’idée de stocker la clef de chiffrement, ailleurs que sur le disque, dans ce que l’on va nommer un élément sécurisé, dans le cas de Windows un TPM (Trusted Platform Module).\nC’est devenu un classique en sécurité informatique: Face aux faiblesses du logiciel, la réponse est bien souvent d’intégrer la fonctionnalité à un circuit intégré. (jeu de mot!)\nLe principe: au démarrage, le TPM stocke la clef de chiffrement du disque et le processus de démarrage interroge ce module TPM pour l’obtenir. Le disque est effectivement chiffré, le disque peut-être retiré de la machine et revendu tel quel sur le marché de seconde main, la confidentialité des données n’en sera pas affectée. Mais il suffit à un attaquant d’écouter (en se branchant physiquement sur l’interface du TPM) le processus de démarrage, sniffer le trafic pour obtenir la clef de chiffrement. On pourrait penser que démarrer l’ordinateur avec un autre système d’exploitation et interroger le TPM suffirait à obtenir la clef. Ce n’est pas le cas, car le TPM “enregistre” le démarrage grâce au micrologiciel UEFI et ne révélera la clef que dans les bonnes conditions.\nLe retour de la première solution, en mieux La solution est relativement simple: un secret de l’utilisateur est nécessaire au démarrage pour obtenir la clef, usuellement un PIN (mais une clef USB peut aussi faire l’affaire). Celui-ci est différent des identifiants utilisateur Windows (même si ceux-ci peuvent aussi être protégés par le TPM). Grâce à l’élément sécurisé à disposition on peut mieux protéger ce secret des attaques par force brute, en effet le TPM va limiter le nombre d’essai.\nLa clef finit de toutes façons en mémoire dans le noyau.\nLes évolutions d’implémentations: Android Android étant basé sur Linux, il a d’abord adopté une solution très similaire à celle de Linux décrite ci-dessus. À noter qu’un secret utilisateur est requis et combiné à un secret fort au sein de l’élément sécurisé du système sur (une) puce (System on (a) Chip, SoC) pour obtenir la clef de chiffrement.\nCependant ce n’est pas très satisfaisant car on souhaite qu’un certain nombre de fonctionnalités soient disponibles uniquement en démarrant le téléphone, sans le secret utilisateur. Pour se faire le chiffrement se fait désormais au niveau de chaque fichier, permettant de séparer les fichiers en deux catégories: ceux chiffrés par une clef en clair dans l’élément sécurisé et ceux chiffrés par une clef protégé par le mot de passe (ou PIN) de l’utilisateur similaire à la solution initiale.\nÀ noter que l’élément sécurisé n’existe pas vraiment ! Ou plutôt il est majoritairement virtuel: c’est un environnent d’exécution particulier du System on Chip (en pratique le Trusted Execution Environment, TEE). Il n’y a donc pas de liaison physique exposée et quasiment pas de risque de sniffing de clefs.\nLa, ou les clefs, une fois obtenues de l’élément sécurisé finissent en mémoire dans le noyau, qui se charge des opérations de chiffrement.\nL’état de l’art: Apple et les derniers Android L’idée est similaire à la section précédente, sauf que l’élément sécurisé (puce “T2”, puis intégré aux Sytem on Chip) va se charger du opérations de chiffrement directement plutôt que de fournir la clef au noyau.\nLa clef ne finit pas en mémoire dans le noyau, elle ne quitte jamais l’élément sécurisé qui la dérive à chaque mise en route.\nCette solution pose des contraintes de performance: le cryptoprocesseur de l’élément sécurisé devant pouvoir chiffrer et déchiffrer sans que les performances du stockage ne soit affecté. Ce qui explique peut-être pourquoi Android ne l’a pas directement adoptée même si une solution similaire est maintenant disponible.\n",
+  "wordCount" : "1061",
+  "inLanguage": "en",
+  "datePublished": "2022-03-28T21:43:50+02:00",
+  "dateModified": "2022-03-28T21:43:50+02:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://notes.fcalvet.fr/posts/le-chiffrement-de-disque/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Notes",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://notes.fcalvet.fr/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://notes.fcalvet.fr/" accesskey="h" title="Notes (Alt + H)">Notes</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Le chiffrement de disque, c&#39;est pas du pareil au même
+    </h1>
+    <div class="post-meta"><span title='2022-03-28 21:43:50 +0200 CEST'>March 28, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>C&rsquo;est l&rsquo;étape obligée d&rsquo;une vérification des pratiques de sécurité informatique de base, le chiffrement de disque, au sens de toutes les données et souvent de la majorité du système d&rsquo;exploitation (en anglais <em>full disk encryption</em>). Mais tous les chiffrements ne se valent pas, une petite vue d&rsquo;ensemble.</p>
+<p><em>Note: Il ne faut pas ici imaginer un avis sur les systèmes d&rsquo;exploitation ou les éventuelles marques associées.</em></p>
+<h2 id="le-principe-de-base-linux">Le principe de base: Linux<a hidden class="anchor" aria-hidden="true" href="#le-principe-de-base-linux">#</a></h2>
+<p>Le chiffrement de disque y est souvent réalisée par l&rsquo;association du module de noyau <a href="https://fr.wikipedia.org/wiki/Dm-crypt">dm-crypt</a> et du format de partition <a href="https://fr.wikipedia.org/wiki/LUKS">LUKS</a> avec <a href="https://gitlab.com/cryptsetup/cryptsetup">cryptsetup</a>.</p>
+<p>Le principe est simple: à l&rsquo;allumage du système, l&rsquo;utilisateur rentre un long mot de passe, qui une fois passé par un fonction de dérivation de clef (<em>KDF</em> en anglais), donne la clef de chiffrement utilisée pour le disque.
+Comble du raffinement, en utilisant un format de partition dédié, on peut avoir plusieurs mots de passe !
+Il suffit de chiffrer la clef de chiffrement du disque avec la clef obtenue par la fonction de dérivation, et de faire de même autant de fois qu&rsquo;on le souhaite (ou plutôt que le permet le format).</p>
+<p>On chiffre le disque un peu comme si c&rsquo;était un gros fichier. Le noyau Linux se chargeant de ces opérations de chiffrement, la clef réside dans sa mémoire une fois le démarrage réalisé.</p>
+<p>On pourra d&rsquo;ailleurs trouver une citation éminemment politique dans la <a href="https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions#5-security-aspects">foire aux questions</a> à propos des clefs de chiffrement:</p>
+<blockquote>
+<p>In most civilized countries you can just refuse to hand over the keys, no harm done.</p>
+</blockquote>
+<h3 id="un-premier-problème-lancer-le-système-dexploitation">Un premier problème: lancer le système d&rsquo;exploitation<a hidden class="anchor" aria-hidden="true" href="#un-premier-problème-lancer-le-système-dexploitation">#</a></h3>
+<p>Pour arriver à saisir le mot de passe, il faut un clavier et un écran initialisés. Et pour permettre cela on va donc laisser toute une partition du disque en clair, <code>/boot</code>. Celle-ci va contenir notamment le gestionnaire de démarrage (usuellement Grub), ainsi que le noyau linux.</p>
+<p>Laisser une partie ou même la totalité du système en clair ne représente pas un grand risque de confidentialité, ce sont des fichiers librement disponibles sur internet où ils sont distribués en clair.
+Le risque est pour l&rsquo;intégrité de celui-ci: sans chiffrement (qui dans le cas qui nous occupe est toujours intègre), un attaquant pourrait le modifier, le compromettre dans l&rsquo;objectif par exemple d&rsquo;obtenir le mot de passe que vous allez entrer au démarrage.
+Se prémunir contre ce genre d&rsquo;attaque nécessite une vérification d&rsquo;intégrité du démarrage extérieure au chiffrement du disque lui-même, c&rsquo;est les <em>Secure/Trusted/Verified Boot</em>.</p>
+<h2 id="larrivée-dune-puce-windows">L&rsquo;arrivée d&rsquo;une puce: Windows<a hidden class="anchor" aria-hidden="true" href="#larrivée-dune-puce-windows">#</a></h2>
+<p>La solution linuxienne repose sur la capacité de l&rsquo;utilisateur à choisir un mot de passe fort, tâche pour laquelle les utilisateurs sont notoirement mauvais. De plus, celui-ci est la seule protection de la clef de chiffrement du disque, et ainsi seule la complexité de la fonction de dérivation de clef protège le chiffrement d&rsquo;une attaque par force brute.</p>
+<p>Vient alors l&rsquo;idée de stocker la clef de chiffrement, ailleurs que sur le disque, dans ce que l&rsquo;on va nommer un élément sécurisé, dans le cas de Windows un TPM (<em>Trusted Platform Module</em>).</p>
+<p>C&rsquo;est devenu un classique en sécurité informatique: Face aux faiblesses du logiciel, la réponse est bien souvent d&rsquo;intégrer la fonctionnalité à un circuit intégré. (jeu de mot!)</p>
+<p>Le principe: au démarrage, le TPM stocke la clef de chiffrement du disque et le processus de démarrage interroge ce module TPM pour l&rsquo;obtenir.
+Le disque est effectivement chiffré, le disque peut-être retiré de la machine et revendu tel quel sur le marché de seconde main, la confidentialité des données n&rsquo;en sera pas affectée.
+Mais il suffit à un attaquant d&rsquo;écouter (en se branchant physiquement sur l&rsquo;interface du TPM) le processus de démarrage, <a href="https://pulsesecurity.co.nz/articles/TPM-sniffing"><em>sniffer</em> le trafic</a> pour obtenir la clef de chiffrement.
+On pourrait penser que démarrer l&rsquo;ordinateur avec un autre système d&rsquo;exploitation et interroger le TPM suffirait à obtenir la clef. Ce n&rsquo;est pas le cas, car <a href="https://security.stackexchange.com/questions/39329/how-does-the-tpm-perform-integrity-measurements-on-a-system">le TPM &ldquo;enregistre&rdquo; le démarrage</a> grâce au micrologiciel UEFI et ne révélera la clef que dans les bonnes conditions.</p>
+<h3 id="le-retour-de-la-première-solution-en-mieux">Le retour de la première solution, en mieux<a hidden class="anchor" aria-hidden="true" href="#le-retour-de-la-première-solution-en-mieux">#</a></h3>
+<p>La solution est relativement simple: un secret de l&rsquo;utilisateur est nécessaire au démarrage pour obtenir la clef, usuellement un <em>PIN</em> (mais une clef USB peut aussi faire l&rsquo;affaire). Celui-ci est différent des identifiants utilisateur Windows (même si ceux-ci peuvent aussi être protégés par le TPM).
+Grâce à l&rsquo;élément sécurisé à disposition on peut mieux protéger ce secret des attaques par force brute, en effet le <a href="https://docs.microsoft.com/en-us/windows/security/information-protection/tpm/tpm-fundamentals#anti-hammering">TPM va limiter le nombre d&rsquo;essai</a>.</p>
+<p>La clef finit de toutes façons en mémoire dans le noyau.</p>
+<h2 id="les-évolutions-dimplémentations-android">Les évolutions d&rsquo;implémentations: Android<a hidden class="anchor" aria-hidden="true" href="#les-évolutions-dimplémentations-android">#</a></h2>
+<p>Android étant basé sur Linux, il a d&rsquo;abord adopté une <a href="https://source.android.com/security/encryption/full-disk">solution très similaire</a> à celle de Linux décrite ci-dessus. À noter qu&rsquo;un secret utilisateur est requis et combiné à un secret fort au sein de l&rsquo;élément sécurisé du système sur (une) puce (<em>System on (a) Chip</em>, SoC) pour obtenir la clef de chiffrement.</p>
+<p>Cependant ce n&rsquo;est pas très satisfaisant car on souhaite qu&rsquo;un certain nombre de fonctionnalités soient disponibles uniquement en démarrant le téléphone, sans le secret utilisateur. Pour se faire le chiffrement se fait désormais <a href="https://source.android.com/security/encryption/file-based">au niveau de chaque fichier</a>, permettant de séparer les fichiers en deux catégories: ceux chiffrés par une clef en clair dans l&rsquo;élément sécurisé et ceux chiffrés par une clef protégé par le mot de passe (ou PIN) de l&rsquo;utilisateur similaire à la solution initiale.</p>
+<p>À noter que l’élément sécurisé n&rsquo;existe pas vraiment ! Ou plutôt il est majoritairement virtuel: c&rsquo;est un environnent d’exécution particulier du <em>System on Chip</em> (en pratique le <em>Trusted Execution Environment</em>, TEE). Il n&rsquo;y a donc pas de liaison physique exposée et quasiment pas de risque de sniffing de clefs.</p>
+<p>La, ou les clefs, une fois obtenues de l&rsquo;élément sécurisé finissent en mémoire dans le noyau, qui se charge des opérations de chiffrement.</p>
+<h2 id="létat-de-lart-apple-et-les-derniers-android">L&rsquo;état de l&rsquo;art: Apple et les derniers Android<a hidden class="anchor" aria-hidden="true" href="#létat-de-lart-apple-et-les-derniers-android">#</a></h2>
+<p>L&rsquo;idée est similaire à la section précédente, sauf que l&rsquo;élément sécurisé (puce &ldquo;T2&rdquo;, puis intégré aux <em>Sytem on Chip</em>) va se charger du opérations de chiffrement directement plutôt que de fournir la clef au noyau.</p>
+<p>La clef ne finit <strong>pas</strong> en mémoire dans le noyau, elle ne quitte jamais l&rsquo;élément sécurisé qui la dérive à chaque mise en route.</p>
+<p>Cette solution pose des contraintes de performance: le cryptoprocesseur de l&rsquo;élément sécurisé devant pouvoir chiffrer et déchiffrer sans que les performances du stockage ne soit affecté. Ce qui explique peut-être pourquoi Android ne l&rsquo;a pas directement adoptée même si <a href="https://source.android.com/security/encryption/hw-wrapped-keys">une solution similaire est maintenant disponible</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://notes.fcalvet.fr/">Notes</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
